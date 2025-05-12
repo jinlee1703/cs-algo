@@ -1,0 +1,16 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+COMMIT_MSG_FILE=$1
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# 원하는 형식: type: 내용 #123
+PATTERN='^(feat|fix|docs|rename|style|refactor|test|chore): .+ #[0-9]+$'
+
+if ! echo "$COMMIT_MSG" | grep -Eq "$PATTERN"; then
+  echo ""
+  echo "❌ 커밋 메시지 형식이 올바르지 않습니다."
+  echo "   형식: type: 내용 #issue_number"
+  echo "   예시: feat: 사용자 구독 API 구현 #12"
+  exit 1
+fi
