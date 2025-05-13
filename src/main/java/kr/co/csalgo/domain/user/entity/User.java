@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @NoArgsConstructor
 @Getter
@@ -21,9 +19,7 @@ public class User extends AuditableEntity {
 
 
     @Builder
-    public User(String email, LocalDateTime createdAt, LocalDateTime deletedAt) {
+    public User(String email) {
         this.email = email;
-        this.createdAt = createdAt;
-        this.deletedAt = deletedAt;
     }
 }

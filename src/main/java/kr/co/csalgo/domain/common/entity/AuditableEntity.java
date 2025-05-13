@@ -8,8 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @MappedSuperclass
-public abstract class AuditableEntity {
-
+public abstract class AuditableEntity extends IdentifiableEntity {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 

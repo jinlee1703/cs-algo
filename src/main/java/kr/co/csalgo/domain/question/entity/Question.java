@@ -1,21 +1,16 @@
 package kr.co.csalgo.domain.question.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import kr.co.csalgo.domain.common.entity.AuditableEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @NoArgsConstructor
 @Getter
 public class Question extends AuditableEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(nullable = false)
     private String title;
 
@@ -25,22 +20,10 @@ public class Question extends AuditableEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String solution;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column
-    private LocalDateTime updatedAt;
-
-    @Column
-    private LocalDateTime deletedAt;
-
     @Builder
-    public Question(String title, String description, String solution, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+    public Question(String title, String description, String solution) {
         this.title = title;
         this.description = description;
         this.solution = solution;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
     }
 }
