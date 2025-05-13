@@ -1,6 +1,7 @@
 package kr.co.csalgo.domain.question.entity;
 
 import jakarta.persistence.*;
+import kr.co.csalgo.domain.common.entity.AuditableEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Question {
+public class Question extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
