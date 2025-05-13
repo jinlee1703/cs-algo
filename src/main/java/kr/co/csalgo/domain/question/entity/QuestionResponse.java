@@ -1,9 +1,6 @@
 package kr.co.csalgo.domain.question.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import kr.co.csalgo.domain.common.entity.AuditableEntity;
 import kr.co.csalgo.domain.user.entity.User;
 import lombok.Builder;
@@ -13,7 +10,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Getter
-public class QuestionSendingHistory extends AuditableEntity {
+public class QuestionResponse extends AuditableEntity {
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
@@ -22,9 +20,13 @@ public class QuestionSendingHistory extends AuditableEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String content;
+
     @Builder
-    public QuestionSendingHistory(Question question, User user) {
+    public QuestionResponse(Question question, User user, String content) {
         this.question = question;
         this.user = user;
+        this.content = content;
     }
 }
