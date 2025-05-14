@@ -64,33 +64,12 @@ jobs:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
-      # 5. JaCoCo 뱃지 및 coverage-summary.md 생성
-      - name: Generate JaCoCo Badge and Summary
-        uses: cicirello/jacoco-badge-generator@v2
+      # 5. JaCoCo Report 작성
+      - name: Write JaCoCoReport
+        uses: madrapps/jacoco-report@v1.2
         with:
-          jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
-          badges-directory: coverage/badges/pr-${{ env.PR_NUMBER }}
-          generate-summary: true
-          summary-filename: coverage-summary.md
-      
-      # 6. PR 번호별 HTML 커버리지 리포트 복사
-      - name: Copy coverage HTML report to publish folder
-        run: |
-          mkdir -p coverage/pr-${PR_NUMBER}
-          cp -r build/reports/jacoco/test/html/* coverage/pr-${PR_NUMBER}/
-      
-      # 7. GitHub Pages에 coverage summary, HTML, badge 업로드
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./coverage
-          publish_branch: gh-pages
-      
-      # 8. PR 코멘트 작성: coverage-summary.md의 내용을 그대로 코멘트로 삽입
-      - name: Post coverage summary as PR comment
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
+          title: 📝 테스트 커버리지 리포트입니다
+          paths: ${{ github.workspace }}/backend/build/reports/jacoco/test/jacocoTestReport.xml
           token: ${{ secrets.GITHUB_TOKEN }}
-          header: coverage
-          path: coverage/badges/pr-${{ env.PR_NUMBER }}/coverage-summary.md
+          min-coverage-overall: 50
+          min-coverage-changed-files: 50
