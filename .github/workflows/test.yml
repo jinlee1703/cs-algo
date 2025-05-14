@@ -67,14 +67,14 @@ jobs:
             echo "coverage=0.00" >> $GITHUB_OUTPUT
           fi
 
-      # 7. GitHub Pages에 커버리지 리포트 배포
+      # 7. GitHub Pages에 PR별 커버리지 리포트 배포
       - name: Deploy coverage report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: build/reports/jacoco/test/html
-          destination_dir: coverage
+          destination_dir: coverage/pr-${{ github.event.pull_request.number }}
 
       # 8. PR 코멘트에 커버리지 요약 + GitHub Pages 링크
       - name: Add coverage comment to PR
