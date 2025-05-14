@@ -68,9 +68,10 @@ jobs:
       - name: Generate JaCoCo Badge and Summary
         uses: cicirello/jacoco-badge-generator@v2
         with:
-          jacoco-report-path: build/reports/jacoco/test/jacocoTestReport.xml
+          jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
           badges-directory: badges/pr-${{ github.event.pull_request.number }}
-          generate-coverage-summary: true
+          generate-summary: true
+          summary-filename: coverage-summary.md
 
       # 6. PR 번호별 coverage report 복사
       - name: Copy coverage HTML report to publish folder
