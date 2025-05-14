@@ -1,0 +1,61 @@
+name: Test Coverage Comment
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-and-report:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      # 1. 소스코드 체크아웃
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      # 2. JDK 21 설치
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Build with Gradle & Run Tests
+        run: ./gradlew clean test jacocoTestReport
+
+      # 3. JaCoCo 리포트 생성
+      - name: Parse JaCoCo Coverage Report
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.3
+        with:
+          paths: build/reports/jacoco/test/jacocoTestReport.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # 4. JaCoCo 리포트 HTML 생성
+      - name: Copy coverage to publish folder
+        run: |
+          mkdir -p coverage
+          cp -r build/reports/jacoco/test/html/* coverage/
+
+      # 5. JaCoCo 리포트 HTML을 GitHub Pages에 배포
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./coverage
+
+      # 5. JaCoCo 리포트 주석으로 PR에 코멘트 달기
+      - name: Comment on PR with Coverage Report
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          header: coverage
+          message: |
+            ### ✅ Test Coverage Summary
+            - Lines: `${{ steps.jacoco.outputs.covered_lines }}` / `${{ steps.jacoco.outputs.total_lines }}`
+            - Coverage: `${{ steps.jacoco.outputs.coverage }}%`
+            - [📊 View Full Coverage Report](https://team-jjins.github.io/cs-algo/)
