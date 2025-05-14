@@ -69,28 +69,28 @@ jobs:
         uses: cicirello/jacoco-badge-generator@v2
         with:
           jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
-          badges-directory: badges/pr-${{ github.event.pull_request.number }}
+          badges-directory: coverage/badges/pr-${{ env.PR_NUMBER }}
           generate-summary: true
           summary-filename: coverage-summary.md
-
-      # 6. PR 번호별 coverage report 복사
+      
+      # 6. PR 번호별 HTML 커버리지 리포트 복사
       - name: Copy coverage HTML report to publish folder
         run: |
           mkdir -p coverage/pr-${PR_NUMBER}
           cp -r build/reports/jacoco/test/html/* coverage/pr-${PR_NUMBER}/
-
-      # 7. GitHub Pages에 coverage summary 및 HTML 업로드
+      
+      # 7. GitHub Pages에 coverage summary, HTML, badge 업로드
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./coverage
           publish_branch: gh-pages
-
-      # 8. PR 코멘트 작성: 커버리지 정보 요약 파일 포함
+      
+      # 8. PR 코멘트 작성: coverage-summary.md의 내용을 그대로 코멘트로 삽입
       - name: Post coverage summary as PR comment
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           header: coverage
-          path: badges/pr-${{ github.event.pull_request.number }}/coverage-summary.md
+          path: coverage/badges/pr-${{ env.PR_NUMBER }}/coverage-summary.md
