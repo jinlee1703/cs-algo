@@ -25,7 +25,7 @@ on:
         required: false
 
 jobs:
-  test-and-report:
+  coverage:
     runs-on: ubuntu-latest
 
     permissions:
@@ -55,8 +55,8 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      # 4. Gradle 테스트 및 커버리지 리포트 생성
-      - name: Build with Gradle & Run Tests
+      # 4. Gradle 테스트 및 JaCoCo 리포트 생성
+      - name: Run Tests and Coverage
         run: ./gradlew clean test jacocoTestReport
         env:
           DB_HOST: ${{ secrets.DB_HOST }}
@@ -64,41 +64,32 @@ jobs:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
-      # 5. JaCoCo 리포트 XML 파싱 (정확한 경로/클래스/소스 지정)
-      - name: Parse JaCoCo Coverage Report
-        id: jacoco
-        uses: madrapps/jacoco-report@v1.7.2
+      # 5. JaCoCo 뱃지 및 coverage-summary.md 생성
+      - name: Generate JaCoCo Badge and Summary
+        uses: cicirello/jacoco-badge-generator@v2
         with:
-          paths: build/reports/jacoco/test/jacocoTestReport.xml
-          classes: build/classes/java/main
-          source: src/main/java
-          token: ${{ secrets.GITHUB_TOKEN }}
-          min-coverage-overall: 10
-          min-coverage-changed-files: 0
+          jacoco-report-path: build/reports/jacoco/test/jacocoTestReport.xml
+          badges-directory: badges/pr-${{ github.event.pull_request.number }}
+          generate-coverage-summary: true
 
-      # 6. PR 번호별 디렉토리 생성 후 HTML 리포트 복사
-      - name: Copy coverage to publish folder
+      # 6. PR 번호별 coverage report 복사
+      - name: Copy coverage HTML report to publish folder
         run: |
           mkdir -p coverage/pr-${PR_NUMBER}
           cp -r build/reports/jacoco/test/html/* coverage/pr-${PR_NUMBER}/
 
-      # 7. HTML 리포트를 gh-pages 브랜치에 배포
+      # 7. GitHub Pages에 coverage summary 및 HTML 업로드
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./coverage
           publish_branch: gh-pages
-          destination_dir: .
 
-      # 8. PR 코멘트에 커버리지 요약 및 리포트 링크 추가
-      - name: Comment on PR with Coverage Report
+      # 8. PR 코멘트 작성: 커버리지 정보 요약 파일 포함
+      - name: Post coverage summary as PR comment
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           header: coverage
-          message: |
-            ### ✅ Test Coverage Summary
-            - Lines: `${{ steps.jacoco.outputs.covered_lines }}` / `${{ steps.jacoco.outputs.total_lines }}`
-            - Coverage: `${{ steps.jacoco.outputs.coverage }}%`
-            - [📊 View Full Coverage Report](https://team-jjins.github.io/cs-algo/pr-${{ github.event.pull_request.number }}/)
+          path: badges/pr-${{ github.event.pull_request.number }}/coverage-summary.md
