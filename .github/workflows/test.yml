@@ -65,6 +65,8 @@ jobs:
             echo "coverage=$COVERED" >> $GITHUB_OUTPUT
           else
             echo "coverage=0.00" >> $GITHUB_OUTPUT
+          fi
+
 
       # 7. PR 코멘트 등록
       - name: Add coverage comment to PR
