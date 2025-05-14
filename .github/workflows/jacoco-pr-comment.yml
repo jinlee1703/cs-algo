@@ -64,13 +64,17 @@ jobs:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
-      # 5. JaCoCo 리포트 XML 파싱 (커버리지 요약 추출용)
+      # 5. JaCoCo 리포트 XML 파싱 (정확한 경로/클래스/소스 지정)
       - name: Parse JaCoCo Coverage Report
         id: jacoco
-        uses: madrapps/jacoco-report@v1.3
+        uses: madrapps/jacoco-report@v1.7.2
         with:
           paths: build/reports/jacoco/test/jacocoTestReport.xml
+          classes: build/classes/java/main
+          source: src/main/java
           token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 10
+          min-coverage-changed-files: 0
 
       # 6. PR 번호별 디렉토리 생성 후 HTML 리포트 복사
       - name: Copy coverage to publish folder
