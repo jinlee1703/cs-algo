@@ -13,7 +13,6 @@ public class SubscriptionUseCase {
     private final UserService userService;
 
     public SubscriptionUseCaseDto.Response create(SubscriptionUseCaseDto.Request request) {
-        userService.checkDuplicateEmail(request.getEmail());
         User user = userService.create(request.getEmail());
         return SubscriptionUseCaseDto.Response.fromEntity(user);
     }

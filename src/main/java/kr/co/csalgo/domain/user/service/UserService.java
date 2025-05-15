@@ -15,6 +15,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User create(String email) {
+        checkDuplicateEmail(email);
         User user = User.builder()
                 .email(email)
                 .build();
@@ -22,7 +23,7 @@ public class UserService {
         return user;
     }
 
-    public void checkDuplicateEmail(String email) {
+    private void checkDuplicateEmail(String email) {
         if (userRepository.existsByEmail(email)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, ErrorCode.DUPLICATE_EMAIL.getMessage());
         }
