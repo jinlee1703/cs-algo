@@ -1,4 +1,4 @@
-package kr.co.csalgo.presentation.user;
+package kr.co.csalgo.presentation.subscription;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class UserControllerTest {
+public class SubscriptionControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
