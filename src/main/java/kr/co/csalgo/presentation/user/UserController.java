@@ -1,5 +1,6 @@
 package kr.co.csalgo.presentation.user;
 
+import jakarta.validation.Valid;
 import kr.co.csalgo.application.user.dto.RegisterUserReq;
 import kr.co.csalgo.application.user.dto.RegisterUserRes;
 import kr.co.csalgo.application.user.usecase.RegisterUserUseCase;
@@ -17,7 +18,7 @@ public class UserController {
     private final RegisterUserUseCase registerUserUseCase;
 
     @PostMapping
-    public ResponseEntity<RegisterUserRes> registerUser(@RequestBody RegisterUserReq request) {
+    public ResponseEntity<RegisterUserRes> registerUser(@Valid @RequestBody RegisterUserReq request) {
         return ResponseEntity.ok(registerUserUseCase.create(request));
     }
 
