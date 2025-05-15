@@ -14,8 +14,10 @@ public class RegisterUserUseCase {
     private final UserService userService;
 
     public RegisterUserRes create(RegisterUserReq request) {
+        userService.checkDuplicateEmail(request.getEmail());
         User user = userService.create(request.getEmail());
         return RegisterUserRes.fromEntity(user);
     }
+
 
 }
