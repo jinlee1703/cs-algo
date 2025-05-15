@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kr.co.csalgo.application.user.dto.SubscriptionUseCaseDto;
-import kr.co.csalgo.application.user.usecase.RegisterUserUseCase;
+import kr.co.csalgo.application.user.usecase.SubscriptionUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/subscriptions")
 @Tag(name = "Subscription", description = "구독 관련 API")
-public class UserController {
-    private final RegisterUserUseCase registerUserUseCase;
+public class SubscriptionController {
+    private final SubscriptionUseCase subscriptionUseCase;
 
     @PostMapping
     @Operation(summary = "구독 등록", description = "사용자가 이메일을 통해 구독을 등록할 수 있습니다.")
@@ -29,6 +29,6 @@ public class UserController {
             @ApiResponse(responseCode = "409", description = "중복된 이메일로 인한 구독 불가")
     })
     public ResponseEntity<?> registerUser(@Valid @RequestBody SubscriptionUseCaseDto.Request request) {
-        return ResponseEntity.ok(registerUserUseCase.create(request));
+        return ResponseEntity.ok(subscriptionUseCase.create(request));
     }
 }

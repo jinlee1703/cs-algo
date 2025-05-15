@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class RegisterUserUseCase {
+public class SubscriptionUseCase {
 
     private final UserService userService;
 
@@ -17,6 +17,5 @@ public class RegisterUserUseCase {
         User user = userService.create(request.getEmail());
         return SubscriptionUseCaseDto.Response.fromEntity(user);
     }
-
 
 }
