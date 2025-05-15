@@ -11,8 +11,18 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
+server:
+  error:
+    include-stacktrace: never
+
 management:
   endpoints:
     web:
       exposure:
         include: health
+  endpoint:
+    health:
+      show-details: never
+
+springdoc:
+  show-actuator: true

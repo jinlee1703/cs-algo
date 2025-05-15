@@ -15,32 +15,6 @@ java {
     }
 }
 
-jacoco {
-    toolVersion = "0.8.12"
-}
-
-sonar {
-  properties {
-    property "sonar.projectKey", "jinlee1703_cs-algo"
-    property "sonar.organization", "jinlee1703-csalgo"
-    property "sonar.host.url", "https://sonarcloud.io"
-  }
-}
-
-test {
-    useJUnitPlatform()
-    finalizedBy jacocoTestReport
-}
-
-jacocoTestReport {
-    dependsOn test
-    reports {
-        xml.required = true
-        html.required = true
-        csv.required = true
-    }
-}
-
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -61,6 +35,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {
