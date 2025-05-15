@@ -70,6 +70,9 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         with:
           args: >
+            -Dsonar.projectKey=jinlee1703-csalgo
+            -Dsonar.organization=jinlee1703
+            -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       # 8. SonarCloud에서 커버리지 측정값 가져오기
