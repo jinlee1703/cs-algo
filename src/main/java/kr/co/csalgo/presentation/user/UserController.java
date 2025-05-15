@@ -5,8 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import kr.co.csalgo.application.user.dto.RegisterUserReq;
-import kr.co.csalgo.application.user.dto.RegisterUserRes;
+import kr.co.csalgo.application.user.dto.SubscriptionUseCaseDto;
 import kr.co.csalgo.application.user.usecase.RegisterUserUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +28,7 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청 (유효성 검사 실패)"),
             @ApiResponse(responseCode = "409", description = "중복된 이메일로 인한 구독 불가")
     })
-    public ResponseEntity<RegisterUserRes> registerUser(@Valid @RequestBody RegisterUserReq request) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SubscriptionUseCaseDto.Request request) {
         return ResponseEntity.ok(registerUserUseCase.create(request));
     }
 }
