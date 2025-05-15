@@ -4,7 +4,9 @@ import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.user.entity.User;
 import kr.co.csalgo.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ public class UserService {
 
     public void checkDuplicateEmail(String email) {
         if (userRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException(ErrorCode.DUPLICATE_EMAIL.getMessage());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ErrorCode.DUPLICATE_EMAIL.getMessage());
         }
     }
 }
