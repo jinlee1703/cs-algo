@@ -19,3 +19,16 @@ management:
   endpoint:
     health:
       show-details: never
+
+sonar:
+  projectKey: jinlee1703-csalgo
+  organization: jinlee1703
+  host:
+    url: https://sonarcloud.io
+  sources: src/main
+  tests: src/test
+  java:
+    binaries: build
+  coverage:
+    jacoco:
+      xmlReportPaths: build/reports/jacoco/test/jacocoTestReport.xml
